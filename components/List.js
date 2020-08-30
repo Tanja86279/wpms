@@ -4,7 +4,7 @@ import React, {useState, useEffect} from 'react';
 import {FlatList} from 'react-native';
 import {ListItem} from './ListItem';
 
-const url = 'https://raw.githubusercontent.com/mattpe/wbma/master/docs/assets/test.json';
+const url = 'http://media.mw.metropolia.fi/wbma/media/';
 
 const loadMedia = async () => {
   const response = await fetch(url);
@@ -19,7 +19,12 @@ export const List = () => {
     const fetchData = async () => {
       try {
         const result = await loadMedia();
-        setMedia(result);
+        const endResult = await Promise.all(result.map(async (item) => {
+          const response = await fetch(url + item.file_id);
+          const json = await response.json();
+          return json;
+        }));
+        setMedia(endResult);
       } catch (ex) {
         console.log(ex);
       }
@@ -33,4 +38,4 @@ export const List = () => {
       renderItem={({item}) => <ListItem singleMedia={item} />}
     />
   );
-}
+};
