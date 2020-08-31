@@ -6,7 +6,7 @@ import {
   FlatList,
   TouchableOpacity,
   Image,
-  SafeAreaView,
+  SafeAreaView
 } from "react-native";
 import { List } from "./components/List";
 
