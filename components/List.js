@@ -1,41 +1,37 @@
-/* eslint-disable max-len */
-import React, { useState, useEffect } from "react";
-// eslint-disable-next-line max-len
-import { FlatList, Image, View, Text } from "react-native";
-import { ListItem } from "./ListItem";
+import React, {useState, useEffect} from 'react';
+import {
+  FlatList, Image, View, Text,
+} from 'react-native';
+import ListItem from './ListItem';
+import PropTypes from 'prop-types';
 
-const url = "http://media.mw.metropolia.fi/wbma/media/";
+const url = 'http://media.mw.metropolia.fi/wbma/';
 
-const loadMedia = async () => {
-  const response = await fetch(url);
-  const json = await response.json();
-  console.log(json);
-  return json;
-};
+const List = ({navigation}) => {
+  const [mediaArray, setMediaArray] = useState([]);
 
-export const List = () => {
-  const [mediaArray, setMedia] = useState([]);
   useEffect(() => {
-    const fetchData = async () => {
+    const loadMedia = async () => {
       try {
-        const result = await loadMedia();
-        const endResult = await Promise.all(
-          result.map(async (item) => {
-            const response = await fetch(url + item.file_id);
-            const json = await response.json();
-            return json;
-          })
-        );
-        setMedia(endResult);
-      } catch (ex) {
-        console.log(ex);
+        const response = await fetch(url + 'media');
+        const json = await response.json();
+        const media = await Promise.all(json.map(async (item) => {
+          const resp2 = await fetch(url + 'media/' + item.file_id);
+          const json2 = await resp2.json();
+          return json2;
+        }));
+        console.log('loadMedia', media);
+        setMediaArray(media);
+      } catch (e) {
+        console.error(e);
       }
     };
-    fetchData();
+
+    loadMedia();
   }, []);
 
   return (
-    <View style={{ backgroundColor: "lightgray" }}>
+    <View>
       <Text
         style={{
           position: "absolute",
@@ -58,11 +54,19 @@ export const List = () => {
         style={{ marginBottom: 10, height: 200 }}
         source={{ uri: "https://i.imgur.com/myi3r6L.jpg" }}
       />
-      <FlatList
-        data={mediaArray}
-        keyExtractor={(item, index) => index.toString()}
-        renderItem={({ item }) => <ListItem singleMedia={item} />}
-      />
+    <FlatList
+      data={mediaArray}
+      keyExtractor={(item, index) => index.toString()}
+      renderItem={({item}) =>
+        <ListItem singleMedia={item} navigation={navigation} />
+      }
+    />
     </View>
   );
 };
+
+List.propTypes = {
+  navigation: PropTypes.object,
+};
+
+export default List;
