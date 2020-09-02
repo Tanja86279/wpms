@@ -19,10 +19,19 @@ const TabScreen = () => {
 };
 
 const StackScreen = () => {
+  const isLoggedIn = false;
   return (
     <Stack.Navigator>
-      <Stack.Screen name='Home' component={TabScreen} />
-      <Stack.Screen name='Single' component={Single} />
+      {isLoggedIn ? (
+        <>
+          <Stack.Screen name="Home" component={TabScreen}/>
+          <Stack.Screen name="Single" component={Single}/>
+        </>
+      ) : (
+        <>
+          <Stack.Screen name="Login" component={Login}/>
+        </>
+      )}
     </Stack.Navigator>
   );
 };
