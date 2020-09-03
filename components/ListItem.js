@@ -32,7 +32,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     margin: 4,
     backgroundColor: "#c9dfff",
-    border: "1px solid #4c1fd1",
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.5,
@@ -41,7 +40,7 @@ const styles = StyleSheet.create({
   },
   imagebox: {
     flex: 1,
-    maxWidth:100,
+    maxWidth: 100,
   },
   image: {
     width: 100,
@@ -57,7 +56,6 @@ const styles = StyleSheet.create({
   listTitle: {
     fontSize: 25,
     fontWeight: "bold",
-    fontFamily: '"Times New Roman", Times, serif',
     color: "#4c1fd1",
     marginBottom: 10,
   },

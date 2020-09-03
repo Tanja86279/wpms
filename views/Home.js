@@ -1,14 +1,10 @@
-import {StatusBar} from 'expo-status-bar';
-import React from 'react';
-import {
-  StyleSheet,
-  SafeAreaView,
-} from 'react-native';
-import List from '../components/List';
-import PropTypes from 'prop-types';
+import { StatusBar } from "expo-status-bar";
+import React from "react";
+import { StyleSheet, SafeAreaView } from "react-native";
+import List from "../components/List";
+import PropTypes from "prop-types";
 
-
-const Home = ({navigation}) => {
+const Home = ({ navigation }) => {
   // const {navigation} = props;
   // const navigation = props.navigation;
   return (
@@ -21,7 +17,7 @@ const Home = ({navigation}) => {
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     paddingHorizontal: 10,
   },
 });
@@ -29,6 +25,5 @@ const styles = StyleSheet.create({
 Home.propTypes = {
   navigation: PropTypes.object,
 };
-
 
 export default Home;
