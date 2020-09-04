@@ -35,9 +35,17 @@ const postLogIn = async (userCreds) => {
     },
     body: JSON.stringify(userCreds),
   };
-  const response = await fetch(apiUrl + "login", options);
-  const userData = await response.json();
-  return userData;
+  try {
+    const response = await fetch(apiUrl + "login", options);
+    const userData = await response.json();
+    if (response.ok) {
+      return userData;
+    } else {
+      throw new Error(userData.message)
+    }
+  } catch (e) {
+    throw new Error(e.message);
+  }
 };
 
 export { useLoadMedia, postLogIn };
