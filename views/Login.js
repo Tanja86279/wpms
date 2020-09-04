@@ -3,7 +3,7 @@ import { StyleSheet, View, Text, Button } from "react-native";
 import PropTypes from "prop-types";
 import { AuthContext } from "../contexts/AuthContext";
 import AsyncStorage from "@react-native-community/async-storage";
-import { postLogIn } from "../hooks/APIhooks";
+import { postLogIn, checkToken } from "../hooks/APIhooks";
 
 const Login = ({ navigation }) => {
   // props is needed for navigation
@@ -13,8 +13,14 @@ const Login = ({ navigation }) => {
   const getToken = async () => {
     const userToken = await AsyncStorage.getItem("userToken");
     console.log("token", userToken);
-    if (userToken === "abc") {
-      setIsLoggedIn(true);
+    if (userToken) {
+      try {
+        const userData = await checkToken(userToken);
+        console.log("token valid", userData);
+        setIsLoggedIn(true);
+      } catch (e) {
+        console.log("issue validating token", e.message);
+      }
       // navigation.navigate("Home");
     }
   };
