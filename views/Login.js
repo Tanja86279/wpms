@@ -30,7 +30,7 @@ const Login = ({ navigation }) => {
       });
       console.log("user login:", userData);
       setIsLoggedIn(true);
-      await AsyncStorage.setItem("userToken", "abc");
+      await AsyncStorage.setItem("userToken", userData.token);
     } catch (e) {
       console.log("login error", e.message);
     }
