@@ -41,11 +41,31 @@ const postLogIn = async (userCreds) => {
     if (response.ok) {
       return userData;
     } else {
-      throw new Error(userData.message)
+      throw new Error(userData.message);
     }
   } catch (e) {
     throw new Error(e.message);
   }
 };
 
-export { useLoadMedia, postLogIn };
+const checkToken = async (token) => {
+  const options = {
+    method: "GET",
+    headers: {
+      "x-access-token": token,
+    },
+  };
+  try {
+    const response = await fetch(apiUrl + "users/user", options);
+    const userData = await response.json();
+    if (response.ok) {
+      return userData;
+    } else {
+      throw new Error(userData.message);
+    }
+  } catch (e) {
+    throw new Error(e.message);
+  }
+};
+
+export { useLoadMedia, postLogIn, checkToken };

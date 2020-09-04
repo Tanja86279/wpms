@@ -15,7 +15,7 @@ const Login = ({ navigation }) => {
     console.log("token", userToken);
     if (userToken === "abc") {
       setIsLoggedIn(true);
-      navigation.navigate("Home");
+      // navigation.navigate("Home");
     }
   };
   useEffect(() => {
