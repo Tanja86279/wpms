@@ -15,6 +15,7 @@ const useLoadMedia = () => {
           return json2;
         })
       );
+      // console.log('loadMedia', media);
       setMediaArray(media);
     } catch (e) {
       console.error(e);
@@ -30,9 +31,7 @@ const useLoadMedia = () => {
 const postLogIn = async (userCreds) => {
   const options = {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-    },
+    headers: { "Content-Type": "application/json" },
     body: JSON.stringify(userCreds),
   };
   try {
@@ -48,12 +47,30 @@ const postLogIn = async (userCreds) => {
   }
 };
 
+const postRegistration = async (newUser) => {
+  const options = {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify(newUser),
+  };
+  try {
+    console.log(newUser);
+    const response = await fetch(apiUrl + "users", options);
+    const result = await response.json();
+    if (response.ok) {
+      return result;
+    } else {
+      throw new Error(result.message);
+    }
+  } catch (e) {
+    throw new Error(e.message);
+  }
+};
+
 const checkToken = async (token) => {
   const options = {
     method: "GET",
-    headers: {
-      "x-access-token": token,
-    },
+    headers: { "x-access-token": token },
   };
   try {
     const response = await fetch(apiUrl + "users/user", options);
@@ -68,4 +85,4 @@ const checkToken = async (token) => {
   }
 };
 
-export { useLoadMedia, postLogIn, checkToken };
+export { useLoadMedia, postLogIn, checkToken, postRegistration };
