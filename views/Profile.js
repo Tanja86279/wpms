@@ -24,7 +24,8 @@ const Profile = ({ navigation }) => {
   };
   return (
     <Container>
-      <Content>
+      <Content padder>
+        { user && //näyttää allaovan jos user on olemassa
         <Card>
           <CardItem header bordered>
             <Icon name="person" />
@@ -53,6 +54,7 @@ const Profile = ({ navigation }) => {
             </Body>
           </CardItem>
         </Card>
+        }
       </Content>
     </Container>
   );
