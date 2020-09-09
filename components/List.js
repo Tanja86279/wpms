@@ -1,10 +1,9 @@
 import React from "react";
-import { FlatList, Image, View, Text } from "react-native";
+import { FlatList, Image } from "react-native";
 import ListItem from "./ListItem";
 import PropTypes from "prop-types";
 import { useLoadMedia } from "../hooks/APIhooks";
-
-const url = "http://media.mw.metropolia.fi/wbma/";
+import { View, Text } from "native-base";
 
 const List = ({ navigation }) => {
   const mediaArray = useLoadMedia();
@@ -26,12 +25,12 @@ const List = ({ navigation }) => {
           textDecorationLine: "underline",
         }}
       >
-        Louskutin rannalla
+        Lousku rannalla
       </Text>
       <Image
         style={{ marginBottom: 10, height: 200 }}
         source={{ uri: "https://i.imgur.com/myi3r6L.jpg" }}
-      />
+      ></Image>
       <FlatList
         data={mediaArray}
         keyExtractor={(item, index) => index.toString()}
