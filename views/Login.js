@@ -9,7 +9,7 @@ import { Title, Icon, Container, Content } from "native-base";
 
 const Login = ({ navigation }) => {
   // props is needed for navigation
-  const { setIsLoggedIn, setUser } = useContext(AuthContext);
+  const { setIsLoggedIn, setUser, user } = useContext(AuthContext);
   // console.log('Login', isLoggedIn);
 
   const getToken = async () => {
@@ -30,6 +30,8 @@ const Login = ({ navigation }) => {
   useEffect(() => {
     getToken();
   }, []);
+
+  console.log("Login.js", user);
 
   return (
     <Container>

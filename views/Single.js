@@ -16,14 +16,14 @@ const mediaUrl = "http://media.mw.metropolia.fi/wbma/uploads/";
 
 const Single = ({ route }) => {
   const { file } = route.params;
-  // console.log("Avataan kuva: ", mediaUrl + file.filename);
+  console.log("kuva", mediaUrl + file.filename);
   return (
     <Container>
       <Content padder>
         <Card>
           <CardItem>
             <Left>
-              <Icon name={"aperture"} />
+              <Icon name={"image"} />
               <Title>{file.title}</Title>
             </Left>
           </CardItem>

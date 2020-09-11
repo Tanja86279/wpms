@@ -35,7 +35,7 @@ const ListItem = ({ navigation, singleMedia }) => {
             navigation.navigate("Single", { file: singleMedia });
           }}
         >
-          <Icon name={"paw"}></Icon>
+          <Icon name={"eye"}></Icon>
           <Text>View</Text>
         </Button>
       </Right>
