@@ -9,8 +9,18 @@ import useLoginForm from "../hooks/LoginHooks";
 
 const LoginForm = ({ navigation }) => {
   const { setIsLoggedIn, setUser } = useContext(AuthContext);
+  const {
+    handleInputChange,
+    validateOnSend,
+    inputs,
+    loginErrors,
+  } = useLoginForm();
 
   const doLogin = async () => {
+    if (!validateOnSend()) {
+      console.log("validate on send failed");
+      return;
+    }
     try {
       const userData = await postLogIn(inputs);
       console.log("user login success:", userData);
@@ -23,20 +33,20 @@ const LoginForm = ({ navigation }) => {
     // navigation.navigate('Home');
   };
 
-  const { handleInputChange, inputs } = useLoginForm();
-
   return (
     <Form>
       <FormTextInput
         autoCapitalize="none"
         placeholder="username"
         onChangeText={(txt) => handleInputChange("username", txt)}
+        error={loginErrors.username}
       />
       <FormTextInput
         autoCapitalize="none"
         placeholder="password"
         onChangeText={(txt) => handleInputChange("password", txt)}
         secureTextEntry={true}
+        error={loginErrors.password}
       />
       <Button block onPress={doLogin}>
         <Text>Login!</Text>
