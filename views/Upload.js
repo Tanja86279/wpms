@@ -5,7 +5,6 @@ import FormTextInput from "../components/FormTextInput";
 import { Image, Platform } from "react-native";
 import useUploadForm from "../hooks/UploadHooks";
 import * as ImagePicker from "expo-image-picker";
-// eslint-disable-next-line no-unused-vars
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 import { upload, postTag, appIdentifier } from "../hooks/APIhooks";
@@ -19,11 +18,9 @@ const Upload = ({ navigation }) => {
     setIsLoading(true);
     try {
       const formData = new FormData();
-      // lisätään tekstikentät formDataan
       formData.append("title", inputs.title);
       formData.append("description", inputs.description);
 
-      // lisätään tiedosto formDataan
       const filename = image.split("/").pop();
       const match = /\.(\w+)$/.exec(filename);
       let type = match ? `image/${match[1]}` : `image`;
@@ -52,13 +49,6 @@ const Upload = ({ navigation }) => {
       console.log("upload error:", e.message);
       setIsLoading(false);
     }
-    // Finally-haara toimisi muuten ookoo, mutta tässä tapauksessa asynkroninen
-    // setTimeout sotkee. Eli jos halutaan piilottaa spinneri vasta asetetun
-    // 2 sekunnin viiveen jälkeen, täytyy state muuttaa setTimeoutin yhteydessä
-    //
-    // } finally {
-    //   setIsLoading(false);
-    // }
   };
 
   const pickImage = async () => {
