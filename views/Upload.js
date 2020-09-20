@@ -88,7 +88,6 @@ const Upload = ({ navigation }) => {
   const doReset = () => {
     reset();
     setImage(null);
-    // console.log(inputs);
   };
 
   return (

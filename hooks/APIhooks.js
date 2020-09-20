@@ -9,7 +9,6 @@ const useLoadMedia = () => {
 
   const loadMedia = async () => {
     try {
-      // const response = await fetch(apiUrl + 'media');
       const response = await fetch(apiUrl + "tags/" + appIdentifier);
       const json = await response.json();
       const media = await Promise.all(
@@ -19,7 +18,6 @@ const useLoadMedia = () => {
           return json2;
         })
       );
-      // console.log('loadMedia', media);
       setMediaArray(media);
     } catch (e) {
       console.error(e);
@@ -131,14 +129,12 @@ const upload = async (fd, token) => {
 
   try {
     const response = await axios(options);
-    // console.log('Axios', response.data);
     return response.data;
   } catch (e) {
     throw new Error(e.message);
   }
 };
 
-// Post tag to server
 const postTag = async (tag, token) => {
   const options = {
     method: "POST",
@@ -159,7 +155,6 @@ const postTag = async (tag, token) => {
   } catch (e) {
     throw new Error(e.message);
   }
-  // http://media.mw.metropolia.fi/wbma/docs/#api-Tag-PostTag
 };
 
 export {
