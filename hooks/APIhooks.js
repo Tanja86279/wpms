@@ -2,12 +2,15 @@ import axios from "axios";
 import { useState, useEffect } from "react";
 
 const apiUrl = "http://media.mw.metropolia.fi/wbma/";
+const appIdentifier = "kuikkunen123456789";
 
 const useLoadMedia = () => {
   const [mediaArray, setMediaArray] = useState([]);
+
   const loadMedia = async () => {
     try {
-      const response = await fetch(apiUrl + "media");
+      // const response = await fetch(apiUrl + 'media');
+      const response = await fetch(apiUrl + "tags/" + appIdentifier);
       const json = await response.json();
       const media = await Promise.all(
         json.map(async (item) => {
@@ -135,6 +138,30 @@ const upload = async (fd, token) => {
   }
 };
 
+// Post tag to server
+const postTag = async (tag, token) => {
+  const options = {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+      "x-access-token": token,
+    },
+    body: JSON.stringify(tag),
+  };
+  try {
+    const response = await fetch(apiUrl + "tags", options);
+    const result = await response.json();
+    if (response.ok) {
+      return result;
+    } else {
+      throw new Error(result.message);
+    }
+  } catch (e) {
+    throw new Error(e.message);
+  }
+  // http://media.mw.metropolia.fi/wbma/docs/#api-Tag-PostTag
+};
+
 export {
   useLoadMedia,
   postLogIn,
@@ -143,4 +170,6 @@ export {
   getAvatar,
   checkAvailable,
   upload,
+  postTag,
+  appIdentifier,
 };

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 import PropTypes from "prop-types";
-import { Button, Container, Content, Form, Text } from "native-base";
+import { Button, Container, Content, Form, Spinner, Text } from "native-base";
 import FormTextInput from "../components/FormTextInput";
 import { Image, Platform } from "react-native";
 import useUploadForm from "../hooks/UploadHooks";
@@ -8,33 +8,57 @@ import * as ImagePicker from "expo-image-picker";
 // eslint-disable-next-line no-unused-vars
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
-import { upload } from "../hooks/APIhooks";
+import { upload, postTag, appIdentifier } from "../hooks/APIhooks";
 import AsyncStorage from "@react-native-community/async-storage";
 
 const Upload = ({ navigation }) => {
   const [image, setImage] = useState(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const doUpload = async () => {
-    const formData = new FormData();
-    // lisätään tekstikentät formDataan
-    formData.append("title", inputs.title);
-    formData.append("description", inputs.description);
+    setIsLoading(true);
+    try {
+      const formData = new FormData();
+      // lisätään tekstikentät formDataan
+      formData.append("title", inputs.title);
+      formData.append("description", inputs.description);
 
-    // lisätään tiedosto formDataan
-    const filename = image.split("/").pop();
-    const match = /\.(\w+)$/.exec(filename);
-    let type = match ? `image/${match[1]}` : `image`;
-    if (type === "image/jpg") type = "image/jpeg";
-    formData.append("file", { uri: image, name: filename, type });
-    const userToken = await AsyncStorage.getItem("userToken");
-    const resp = await upload(formData, userToken);
-    console.log("File uploaded: ", resp);
+      // lisätään tiedosto formDataan
+      const filename = image.split("/").pop();
+      const match = /\.(\w+)$/.exec(filename);
+      let type = match ? `image/${match[1]}` : `image`;
+      if (type === "image/jpg") type = "image/jpeg";
+      formData.append("file", { uri: image, name: filename, type });
+      const userToken = await AsyncStorage.getItem("userToken");
+      const resp = await upload(formData, userToken);
+      console.log("File uploaded: ", resp);
 
-    // wait for 2 secs
-    setTimeout(() => {
-      doReset();
-      navigation.push("Home");
-    }, 2000);
+      const postTagResponse = await postTag(
+        {
+          file_id: resp.file_id,
+          tag: appIdentifier,
+        },
+        userToken
+      );
+      console.log("posting tag:", postTagResponse);
+
+      // wait for 2 secs
+      setTimeout(() => {
+        doReset();
+        navigation.push("Home");
+        setIsLoading(false);
+      }, 2000);
+    } catch (e) {
+      console.log("upload error:", e.message);
+      setIsLoading(false);
+    }
+    // Finally-haara toimisi muuten ookoo, mutta tässä tapauksessa asynkroninen
+    // setTimeout sotkee. Eli jos halutaan piilottaa spinneri vasta asetetun
+    // 2 sekunnin viiveen jälkeen, täytyy state muuttaa setTimeoutin yhteydessä
+    //
+    // } finally {
+    //   setIsLoading(false);
+    // }
   };
 
   const pickImage = async () => {
@@ -116,6 +140,7 @@ const Upload = ({ navigation }) => {
         >
           <Text>Upload</Text>
         </Button>
+        {isLoading && <Spinner />}
         <Button block onPress={doReset}>
           <Text>Reset</Text>
         </Button>
